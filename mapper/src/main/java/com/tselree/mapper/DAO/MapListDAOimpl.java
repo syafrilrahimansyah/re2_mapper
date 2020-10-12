@@ -21,7 +21,7 @@ public class MapListDAOimpl implements MapListDAO{
 	@Override
 	public Integer getNew() {
 		try {
-			String sql = "SELECT MIN(ID) FROM MAP_LIST WHERE STAGE = 'ext'";
+			String sql = "SELECT MIN(ID) FROM public.extc_map_list WHERE STAGE = 'ext'";
 			return jdbcTemplate.queryForObject(sql, Integer.class);
 		}
 		catch (EmptyResultDataAccessException e) {
@@ -32,7 +32,7 @@ public class MapListDAOimpl implements MapListDAO{
 	@Override
 	public MapList getMap(int id){
 
-	    String sql = "SELECT * FROM MAP_LIST WHERE ID = "+id;
+	    String sql = "SELECT * FROM extc_map_list WHERE ID = "+id;
 	    
 	    return jdbcTemplate.query(
 	    	      sql,
@@ -50,7 +50,7 @@ public class MapListDAOimpl implements MapListDAO{
 
 	@Override
 	public void updateStage(int id) {
-		String sql = "UPDATE MAP_LIST SET STAGE = 'map' WHERE ID = '"+id+"'";
+		String sql = "UPDATE extc_map_list SET STAGE = 'map' WHERE ID = '"+id+"'";
 		jdbcTemplate.update(sql);
 	}
 

@@ -15,7 +15,7 @@ public class EntityDAOimpl implements EntityDAO{
 	@Override
 	public String getValue(String table, String column, int key) {
 		try {
-			String sql = "SELECT "+column+" FROM `"+table+"` WHERE ID = "+key+"";
+			String sql = "SELECT "+column+" FROM public.re2ety_"+table+" WHERE ID = "+key+"";
 			return jdbcTemplate.queryForObject(sql, String.class);
 		}
 		catch (EmptyResultDataAccessException e) {
@@ -25,7 +25,7 @@ public class EntityDAOimpl implements EntityDAO{
 
 	@Override
 	public void updateValue(String table, String column, int key, String value) {
-		String sql = "UPDATE `"+table+"` SET "+column+" = '"+value+"' WHERE ID = '"+key+"'";
+		String sql = "UPDATE public.re2ety_"+table+" SET "+column+" = '"+value+"' WHERE ID = '"+key+"'";
 		jdbcTemplate.update(sql);
 	}
 

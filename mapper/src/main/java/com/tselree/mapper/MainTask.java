@@ -34,39 +34,46 @@ public class MainTask {
 			log.info("New Map List Found");
 			MapList mapList = mapListDAO.getMap(id);
 			String preValue = entityDAO.getValue(mapList.getTable(), mapList.getColumn(), mapList.getKey());
-			//get DELIMITER
-			//IF EXIST
-			//Explode Value and FOR
-			if(!mapList.getDelimiter().equals("")) {
-				log.info("with delimiter");
-				String arrpreValue[] = preValue.split(mapList.getDelimiter());
-				List<String> listPreValue = new ArrayList<>();
-				listPreValue = Arrays.asList(arrpreValue);
-				List<String> listPostValue = new ArrayList<>();
-				for(String eachPreValue : listPreValue) {
-					String postValue = guidRefDAO.getValue(eachPreValue);
+			if(preValue!=null) {
+				//get DELIMITER
+				//IF EXIST
+				//Explode Value and FOR
+				if(!mapList.getDelimiter().equals("")) {
+					log.info("with delimiter");
+					String arrpreValue[] = preValue.split(mapList.getDelimiter());
+					List<String> listPreValue = new ArrayList<>();
+					listPreValue = Arrays.asList(arrpreValue);
+					List<String> listPostValue = new ArrayList<>();
+					for(String eachPreValue : listPreValue) {
+						String postValue = guidRefDAO.getValue(eachPreValue);
+						if(postValue==null) {
+							log.info("GUID Not Found");
+							listPostValue.add(eachPreValue);
+						}else {
+							listPostValue.add(postValue);
+						}
+					}
+					String postValue = String.join(mapList.getDelimiter(), listPostValue);
+					entityDAO.updateValue(mapList.getTable(), mapList.getColumn(), mapList.getKey(), postValue);
+					
+				}else {
+					// ELSE BELOW
+					//################################## WITHOUT DELIMITER ##########################################
+					String postValue = guidRefDAO.getValue(preValue);
 					if(postValue==null) {
 						log.info("GUID Not Found");
-						listPostValue.add(eachPreValue);
 					}else {
-						listPostValue.add(postValue);
+						entityDAO.updateValue(mapList.getTable(), mapList.getColumn(), mapList.getKey(), postValue);
 					}
-				}
-				String postValue = String.join(mapList.getDelimiter(), listPostValue);
-				entityDAO.updateValue(mapList.getTable(), mapList.getColumn(), mapList.getKey(), postValue);
-				
+					//###############################################################################################
+				}			
+				mapListDAO.updateStage(id);
 			}else {
-				// ELSE BELOW
-				//################################## WITHOUT DELIMITER ##########################################
-				String postValue = guidRefDAO.getValue(preValue);
-				if(postValue==null) {
-					log.info("GUID Not Found");
-				}else {
-					entityDAO.updateValue(mapList.getTable(), mapList.getColumn(), mapList.getKey(), postValue);
-				}
-				//###############################################################################################
-			}			
-			mapListDAO.updateStage(id);
+				log.info("Raw Data Not Found");
+				mapListDAO.updateStage(id);
+			}
+			
+			
 		}else {
 			log.info("Searching Map List");
 		}

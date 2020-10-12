@@ -15,7 +15,7 @@ public class GUIDRefDAOimpl implements GUIDRefDAO{
 	@Override
 	public String getValue(String GUID) {
 		try {
-			String sql = "SELECT `VALUE` FROM GUID_REFERENCES WHERE GUID = '"+GUID+"'";
+			String sql = "SELECT value FROM public.extc_guid_references WHERE guid = '"+GUID+"'";
 			return jdbcTemplate.queryForObject(sql, String.class);
 		}
 		catch (EmptyResultDataAccessException e) {
