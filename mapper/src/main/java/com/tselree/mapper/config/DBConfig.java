@@ -19,7 +19,7 @@ import com.tselree.mapper.DAO.MapListDAOimpl;
 
 @Configuration
 @PropertySource({
-    "file:src/main/resources/application.properties" 
+    "file:src/main/resources/mapper_application.properties" 
 })
 public class DBConfig {
 	@Autowired
